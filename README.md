@@ -8,6 +8,24 @@ description: "Add 150 character max description"
 urlFragment: "update-this-to-unique-url-stub"
 ---
 
+
+
+az k8sconfiguration create --name ops-config \
+--resource-group k8s-clusters \
+--cluster-name arc-aks \
+--operator-instance-name app-config \
+--operator-namespace vote-app \
+--enable-helm-operator \
+--helm-operator-chart-version='0.6.0' \
+--helm-operator-chart-values='--set helm.versions=v3' \
+--repository-url https://github.com/Azure/arc-helm-demo.git \
+--operator-params="--git-readonly \
+--namespace-scope
+
+
+--helm-operator-chart-values='--set helm.versions=v3' \
+
+
 # Official Microsoft Sample
 
 <!-- 
