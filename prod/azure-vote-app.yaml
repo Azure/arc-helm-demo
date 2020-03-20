@@ -6,8 +6,8 @@ metadata:
 spec:
   releaseName: azure-vote-app
   chart:
-    git: https://github.com/Azure/arc-helm-demo.git
-    path: charts/azure-vote-app
+    git: https://github.com/Azure/arc-helm-demo
+    path: charts/azure-vote
     ref: master
   values:
     image:
