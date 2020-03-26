@@ -3,14 +3,11 @@ kind: HelmRelease
 metadata:
   name: azure-vote-app
   namespace: prod
-  annotations:
-    fluxcd.io/automated: "true"
-    filter.fluxcd.io/chart-image: semver:~0.4
 spec:
   releaseName: azure-vote-app
   chart:
     git: https://github.com/Azure/arc-helm-demo
-    path: charts/azure-vote-app
+    path: charts/azure-vote
     ref: master
   values:
     image:
