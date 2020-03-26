@@ -10,17 +10,10 @@ urlFragment: "update-this-to-unique-url-stub"
 
 
 
-az k8sconfiguration create --name ops-config \
---resource-group k8s-clusters \
---cluster-name arc-aks \
---operator-instance-name app-config \
---operator-namespace vote-app \
---enable-helm-operator \
---helm-operator-chart-version='0.6.0' \
---helm-operator-chart-values='--set helm.versions=v3' \
---repository-url https://github.com/Azure/arc-helm-demo.git \
---operator-params="--git-readonly \
---namespace-scope
+az k8sconfiguration create --name azure-voting-app --resource-group k8s-clusters --cluster-name ark-helm \
+--operator-instance-name azure-voting-app --operator-namespace prod \
+--enable-helm-operator --helm-operator-chart-version='0.6.0' --helm-operator-chart-values='--set helm.versions=v3' \
+--repository-url https://github.com/Azure/arc-helm-demo.git --operator-params='--git-readonly --git-path=prod'
 
 
 --helm-operator-chart-values='--set helm.versions=v3' \
