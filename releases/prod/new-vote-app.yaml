@@ -4,7 +4,7 @@ metadata:
   name: new-vote-app
   namespace: prod
 spec:
-  releaseName: new-vote-app-dev
+  releaseName: new-vote-app
   chart:
     git: https://github.com/melzayet/arc-helm-demo
     path: charts/azure-vote
