@@ -1,10 +1,10 @@
 apiVersion: helm.fluxcd.io/v1
 kind: HelmRelease
 metadata:
-  name: azure-vote-app
+  name: new-vote-app
   namespace: prod
 spec:
-  releaseName: azure-vote-app
+  releaseName: new-vote-app-dev
   chart:
     git: https://github.com/melzayet/arc-helm-demo
     path: charts/azure-vote
