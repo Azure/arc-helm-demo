@@ -6,11 +6,11 @@ metadata:
 spec:
   releaseName: azure-vote-app
   chart:
-    git: https://github.com/Azure/arc-helm-demo
+    git: https://github.com/melzayet/arc-helm-demo
     path: charts/azure-vote
     ref: master
   values:
     image:
-      repository: dstrebel/azurevote
-      tag: v1
-    replicaCount: 3
+      repository: melzayet/arc-demo-app
+      tag: v0.1
+    replicaCount: 2

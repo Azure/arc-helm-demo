@@ -42,7 +42,7 @@ spec:
     spec:
       containers:
       - name: azure-vote-front
-        image: neilpeterson/azure-vote-front:v3
+        image: "{{ .Values.image.repository}}:{{ .Values.image.tag}}"
         imagePullPolicy: Always
         ports:
         - containerPort: 80
