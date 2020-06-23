@@ -26,7 +26,7 @@ metadata:
   namespace: prod
   name: vote-front-{{.Release.Name}}
 spec:
-  replicas: 1
+  replicas: {{ .Values.replicaCount}}
   selector:
     matchLabels:
       app: vote-front-{{.Release.Name}}
