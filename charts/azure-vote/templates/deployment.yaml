@@ -1,7 +1,6 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: prod
   name: vote-back-{{.Release.Name}}
 spec:
   replicas: 1
@@ -23,7 +22,6 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: prod
   name: vote-front-{{.Release.Name}}
 spec:
   replicas: {{ .Values.replicaCount}}

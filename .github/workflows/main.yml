@@ -1,0 +1,61 @@
+name: CI
+
+on: [push,pull_request]
+
+env:
+  IMAGE_NAME: melzayet/arc-demo-app
+
+jobs:
+  push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      
+      - uses: azure/setup-kubectl@v1
+      id: installkubectl
+      
+      - uses: azure/k8s-set-context@v1
+        with:
+          method: kubeconfig
+          kubeconfig: ${{ secrets.KUBE_CONFIG }}          
+        id: setcontext
+        
+      - uses: azure/setup-helm@v1
+        id: install
+      
+      - name: Create Testing namespace
+        run: |
+          kubectl create ns candidate-$GITHUB_SHA
+
+      - name: Instal YAML Extactor
+        run: pip install shyaml
+
+      - name: Extra Prod Helm Values
+        if: github.ref == "master"
+        run: cat releases/prod/new-vote-app.yaml | shyaml get-value spec.values >  releases/prod/env-values.yaml
+
+      - name: Install Prod Chart
+        if: github.ref == "master"
+        run: helm install new-vote-app . -f charts/azure-vote/values.yaml -f  releases/prod/env-values.yaml -n candidate-$GITHUB_SHA
+
+      - name: Extra Non-Prod Helm Values
+        if: github.ref != "master"
+        run: cat releases/sth/new-vote-app.yaml | shyaml get-value spec.values >  releases/stg/env-values.yaml
+
+      - name: Install Non-Prod Chart
+        if: github.ref != "master"
+        run: helm install new-vote-app . -f charts/azure-vote/values.yaml -f  releases/stg/env-values.yaml -n candidate-$GITHUB_SHA
+
+      #TODO: check kubectl wait mechanism
+      - name: Sleep for 30 seconds
+        uses: jakejarvis/wait-action@master
+        with:
+          time: '30s'
+
+      - name: Test Prod LoadBalancer
+        IP=$(kubectl get service -l name=azure-vote-front -o=jsonpath='{.items[0].loadBalancer.ingress[0].ip}' -n candidate) | curl $IP
+
+      - name: Delete Testing namespace
+        run: |
+          kubectl delete ns candidate-$GITHUB_SHA
