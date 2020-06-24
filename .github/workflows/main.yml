@@ -28,7 +28,9 @@ jobs:
         run: kubectl create ns candidate-$GITHUB_SHA
 
       - name: Instal YAML Extactor
-        run: pip install wheel shyaml
+        run: |
+          pip install wheel
+          pip install shyaml
 
       - name: Extra Prod Helm Values
         if: github.ref == 'master'
