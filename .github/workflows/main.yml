@@ -53,7 +53,7 @@ jobs:
 
       - name: Test Service through LoadBalancer
         run: |          
-          kubectl get service -l name=azure-vote-front -o=jsonpath='{.items[0].status.loadBalancer.ingress[0].ip}' -n candidate-$GITHUB_SHA) > ip.txt
+          kubectl get service -l name=azure-vote-front -o=jsonpath='{.items[0].status.loadBalancer.ingress[0].ip}' -n candidate-$GITHUB_SHA > ip.txt
           cat ip.txt
           curl $(cat ip.txt)
         
