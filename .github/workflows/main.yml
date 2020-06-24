@@ -32,9 +32,9 @@ jobs:
         if: github.ref == 'refs/heads/master'
         run: |
           echo $github.ref
-          pip install wheel
-          pip install shyaml 
-          cat releases/prod/new-vote-app.yaml | shyaml get-value spec.values >  releases/prod/env-values.yaml
+          pip install --user wheel
+          pip install --user shyaml 
+          cat releases/prod/new-vote-app.yaml | python -m shyaml get-value spec.values >  releases/prod/env-values.yaml
           helm install new-vote-app . -f charts/azure-vote/values.yaml -f  releases/prod/env-values.yaml -n candidate-$GITHUB_SHA
 
       - name: Install Non-Prod Helm Chart
@@ -42,7 +42,7 @@ jobs:
         run: 
           pip install wheel
           pip install shyaml
-          cat releases/stg/new-vote-app.yaml | shyaml get-value spec.values >  releases/stg/env-values.yaml
+          cat releases/stg/new-vote-app.yaml | python -m shyaml get-value spec.values >  releases/stg/env-values.yaml
           helm install new-vote-app . -f charts/azure-vote/values.yaml -f  releases/stg/env-values.yaml -n candidate-$GITHUB_SHA
 
       #TODO: check kubectl wait mechanism
