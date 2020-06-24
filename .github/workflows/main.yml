@@ -60,5 +60,5 @@ jobs:
         
       - name: Delete Testing namespace
         run: |
-        kubectl delete ns candidate-$GITHUB_SHA-stg
-        kubectl delete ns candidate-$GITHUB_SHA-prod
+          kubectl delete ns candidate-$GITHUB_SHA-stg
+          kubectl delete ns candidate-$GITHUB_SHA-prod
