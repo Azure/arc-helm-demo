@@ -11,5 +11,5 @@ spec:
   values:
     image:
       repository: melzayet/arc-demo-app
-      tag: v0.12
+      tag: v0.11
     replicaCount: 2
