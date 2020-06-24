@@ -6,7 +6,7 @@ env:
   IMAGE_NAME: melzayet/arc-demo-app
 
 jobs:
-  push:
+  test-chart:
     runs-on: ubuntu-latest
 
     steps:
