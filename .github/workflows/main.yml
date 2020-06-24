@@ -46,10 +46,10 @@ jobs:
           helm install new-vote-app $GITHUB_WORKSPACE/charts/azure-vote/ -f $GITHUB_WORKSPACE/charts/azure-vote/values.yaml -f  $GITHUB_WORKSPACE/releases/stg/env-values.yaml -n candidate-$GITHUB_SHA
 
       #TODO: check kubectl wait mechanism
-      - name: Sleep for 120 seconds
+      - name: Sleep for 180 seconds
         uses: jakejarvis/wait-action@master
         with:
-          time: '120s'
+          time: '180s'
 
       - name: Test Service through LoadBalancer
         run: IP=$(kubectl get service -l name=azure-vote-front -o=jsonpath='{.items[0].status.loadBalancer.ingress[0].ip}' -n candidate-$GITHUB_SHA) | curl -v $IP
