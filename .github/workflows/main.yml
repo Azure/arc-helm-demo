@@ -1,7 +1,13 @@
 name: CI
 
-on: [push,pull_request]
-
+on:
+  push:
+    # Sequence of patterns matched against refs/heads
+    branches-ignore:
+      - master
+  pull_request:
+    branches:
+      - master
 env:
   IMAGE_NAME: melzayet/arc-demo-app
 
@@ -25,24 +31,19 @@ jobs:
         id: install
       
       - name: Create Testing namespace
-        run: kubectl create ns candidate-$GITHUB_SHA
-
-
-      - name: Install Prod Helm Chart
-        if: github.ref == 'refs/heads/master'
         run: |
-          pip install --user wheel
-          pip install --user shyaml 
-          cat $GITHUB_WORKSPACE/releases/prod/new-vote-app.yaml | python -m shyaml get-value spec.values >  $GITHUB_WORKSPACE/releases/prod/env-values.yaml
-          helm install new-vote-app $GITHUB_WORKSPACE/charts/azure-vote/ -f $GITHUB_WORKSPACE/charts/azure-vote/values.yaml -f  $GITHUB_WORKSPACE/releases/prod/env-values.yaml -n candidate-$GITHUB_SHA
+          kubectl create ns candidate-$GITHUB_SHA-stg
+          kubectl create ns candidate-$GITHUB_SHA-prod
 
-      - name: Install Non-Prod Helm Chart
+      - name: Test all helm charts
         if: github.ref != 'refs/heads/master'
         run: | 
           pip install --user wheel 
           pip install --user shyaml
           cat $GITHUB_WORKSPACE/releases/stg/new-vote-app.yaml | python -m shyaml get-value spec.values >  $GITHUB_WORKSPACE/releases/stg/env-values.yaml
-          helm install new-vote-app $GITHUB_WORKSPACE/charts/azure-vote/ -f $GITHUB_WORKSPACE/charts/azure-vote/values.yaml -f  $GITHUB_WORKSPACE/releases/stg/env-values.yaml -n candidate-$GITHUB_SHA
+          helm install new-vote-app $GITHUB_WORKSPACE/charts/azure-vote/ -f $GITHUB_WORKSPACE/charts/azure-vote/values.yaml -f  $GITHUB_WORKSPACE/releases/stg/env-values.yaml -n candidate-$GITHUB_SHA-stg
+          cat $GITHUB_WORKSPACE/releases/prod/new-vote-app.yaml | python -m shyaml get-value spec.values >  $GITHUB_WORKSPACE/releases/prod/env-values.yaml
+          helm install new-vote-app $GITHUB_WORKSPACE/charts/azure-vote/ -f $GITHUB_WORKSPACE/charts/azure-vote/values.yaml -f  $GITHUB_WORKSPACE/releases/prod/env-values.yaml -n candidate-$GITHUB_SHA-prd
 
       #TODO: check kubectl wait mechanism
       - name: Sleep for 90 seconds
@@ -52,9 +53,12 @@ jobs:
 
       - name: Test Service through LoadBalancer
         run: |          
-          kubectl get service -l name=azure-vote-front -o=jsonpath='{.items[0].status.loadBalancer.ingress[0].ip}' -n candidate-$GITHUB_SHA > ip.txt
-          cat ip.txt
-          curl $(cat ip.txt)
+          kubectl get service -l name=azure-vote-front -o=jsonpath='{.items[0].status.loadBalancer.ingress[0].ip}' -n candidate-$GITHUB_SHA-stg > ip-stg.txt
+          curl $(cat ip-stg.txt)
+          kubectl get service -l name=azure-vote-front -o=jsonpath='{.items[0].status.loadBalancer.ingress[0].ip}' -n candidate-$GITHUB_SHA-stg > ip-prod.txt          
+          curl $(cat ip-prod.txt)
         
       - name: Delete Testing namespace
-        run: kubectl delete ns candidate-$GITHUB_SHA
+        run: |
+        kubectl delete ns candidate-$GITHUB_SHA-stg
+        kubectl delete ns candidate-$GITHUB_SHA-prod
