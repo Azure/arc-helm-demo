@@ -43,7 +43,7 @@ jobs:
           cat $GITHUB_WORKSPACE/releases/stg/new-vote-app.yaml | python -m shyaml get-value spec.values >  $GITHUB_WORKSPACE/releases/stg/env-values.yaml
           helm install new-vote-app $GITHUB_WORKSPACE/charts/azure-vote/ -f $GITHUB_WORKSPACE/charts/azure-vote/values.yaml -f  $GITHUB_WORKSPACE/releases/stg/env-values.yaml -n candidate-$GITHUB_SHA-stg
           cat $GITHUB_WORKSPACE/releases/prod/new-vote-app.yaml | python -m shyaml get-value spec.values >  $GITHUB_WORKSPACE/releases/prod/env-values.yaml
-          helm install new-vote-app $GITHUB_WORKSPACE/charts/azure-vote/ -f $GITHUB_WORKSPACE/charts/azure-vote/values.yaml -f  $GITHUB_WORKSPACE/releases/prod/env-values.yaml -n candidate-$GITHUB_SHA-prd
+          helm install new-vote-app $GITHUB_WORKSPACE/charts/azure-vote/ -f $GITHUB_WORKSPACE/charts/azure-vote/values.yaml -f  $GITHUB_WORKSPACE/releases/prod/env-values.yaml -n candidate-$GITHUB_SHA-prod
 
       #TODO: check kubectl wait mechanism
       - name: Sleep for 90 seconds
