@@ -31,19 +31,19 @@ jobs:
         run: pip install shyaml
 
       - name: Extra Prod Helm Values
-        if: github.ref == "master"
+        if: github.ref == 'master'
         run: cat releases/prod/new-vote-app.yaml | shyaml get-value spec.values >  releases/prod/env-values.yaml
 
       - name: Install Prod Chart
-        if: github.ref == "master"
+        if: github.ref == 'master'
         run: helm install new-vote-app . -f charts/azure-vote/values.yaml -f  releases/prod/env-values.yaml -n candidate-$GITHUB_SHA
 
       - name: Extra Non-Prod Helm Values
-        if: github.ref != "master"
+        if: github.ref != 'master'
         run: cat releases/sth/new-vote-app.yaml | shyaml get-value spec.values >  releases/stg/env-values.yaml
 
       - name: Install Non-Prod Chart
-        if: github.ref != "master"
+        if: github.ref != 'master'
         run: helm install new-vote-app . -f charts/azure-vote/values.yaml -f  releases/stg/env-values.yaml -n candidate-$GITHUB_SHA
 
       #TODO: check kubectl wait mechanism
