@@ -52,7 +52,7 @@ jobs:
           time: '30s'
 
       - name: Test Service through LoadBalancer
-        run: IP=$(kubectl get service -l name=azure-vote-front -o=jsonpath='{.items[0].status.loadBalancer.ingress[0].ip}' -n candidate-$GITHUB_SHA) | curl $IP
+        run: IP=$(kubectl get service -l name=azure-vote-front -o=jsonpath='{.items[0].status.loadBalancer.ingress[0].ip}' -n candidate-$GITHUB_SHA) | curl -v $IP
         
       - name: Delete Testing namespace
         run: kubectl delete ns candidate-$GITHUB_SHA
