@@ -1,64 +1,22 @@
----
-page_type: sample
-languages:
-- csharp
-products:
-- dotnet
-description: "Add 150 character max description"
-urlFragment: "update-this-to-unique-url-stub"
----
+# Self-service and controlled release to your kubernetes clusters running anywhere
 
+Use Github, Azure Arc for Kubernetes and Azure policy to control application release at scale. Your product teams can have control over when and where to release their applications. Yet the release process is standardized and managed.
 
+## Overview
 
-az k8sconfiguration create --name azure-voting-app --resource-group k8s-clusters --cluster-name ark-helm \
---operator-instance-name azure-voting-app --operator-namespace prod \
---enable-helm-operator --helm-operator-chart-version='0.6.0' --helm-operator-chart-values='--set helm.versions=v3' \
---repository-url https://github.com/Azure/arc-helm-demo.git --operator-params='--git-readonly --git-path=prod'
+The diagram below describes in more details the worflow:
 
+![workflow](https://backofficestore.blob.core.windows.net/blogs/images/github-arc.png)
 
---helm-operator-chart-values='--set helm.versions=v3' \
+1. The platform or Kubernetes operator maintains central configuration that applies to all Kubernetes clusters managed by Azure Arc for Kubernetes. When a new application is introduced, she defines which clusters in what locations will get this application deployed. This might include defining staging and production versions in separate Kuberenetes namespaces
+2. The product team working on an application follow Continuous Integration practices where they continuously push into a central branch in their Github repo. This triggers a Githib workflow which builds, tests and on success creates a docker image of the application
+3. At any time, a product team member whether a Product Manager, engineer or else can decide to promote a specific app version. By submitting a Pull Request to change a specific release file, the change will be automatically checked through an automated process. With code review and inspection the request can possibly get approved. If a deployment is required on a staging version in one cluster in Europe for example, the release file under Staging/Europe folder wil need to be modified.
+4. Using Azure Arc Agent the various kubernetes clusters are continuously polling for changes in release files that they have been configured against
 
-
-# Official Microsoft Sample
-
-<!-- 
-Guidelines on README format: https://review.docs.microsoft.com/help/onboard/admin/samples/concepts/readme-template?branch=master
-
-Guidance on onboarding samples to docs.microsoft.com/samples: https://review.docs.microsoft.com/help/onboard/admin/samples/process/onboarding?branch=master
-
-Taxonomies for products and languages: https://review.docs.microsoft.com/new-hope/information-architecture/metadata/taxonomies?branch=master
--->
-
-Give a short description for your sample here. What does it do and why is it important?
-
-## Contents
-
-Outline the file contents of the repository. It helps users navigate the codebase, build configuration and any related assets.
-
-| File/folder       | Description                                |
-|-------------------|--------------------------------------------|
-| `src`             | Sample source code.                        |
-| `.gitignore`      | Define what to ignore at commit time.      |
-| `CHANGELOG.md`    | List of changes to the sample.             |
-| `CONTRIBUTING.md` | Guidelines for contributing to the sample. |
-| `README.md`       | This README file.                          |
-| `LICENSE`         | The license for the sample.                |
-
-## Prerequisites
-
-Outline the required components and tools that a user might need to have on their machine in order to run the sample. This can be anything from frameworks, SDKs, OS versions or IDE releases.
-
-## Setup
-
-Explain how to prepare the sample once the user clones or downloads the repository. The section should outline every step necessary to install dependencies and set up any settings (for example, API keys and output folders).
-
-## Running the sample
-
-Outline step-by-step instructions to execute the sample and see its output. Include steps for executing the sample from the IDE, starting specific services in the Azure portal or anything related to the overall launch of the code.
-
-## Key concepts
-
-Provide users with more context on the tools and services used in the sample. Explain some of the code that is being used and how services interact with each other.
+## Benefits
++ Developers use a simple self-service approach to release or rollback their applications to multiple locations
++ Company wide standards and policies apply on all applications running anywhere
++ Product teams can select whatever tooling they require to build and push docker images. Yet application push is always standardized
 
 ## Contributing
 
