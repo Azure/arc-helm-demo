@@ -18,6 +18,12 @@ The diagram below describes in more details the worflow:
 + Company wide standards and policies apply on all applications running anywhere
 + Product teams can select whatever tooling they require to build and push docker images. Yet application push is always standardized
 
+## Try it 
+
+Follow the steps below to try the workflow yourself
+
+>Steps go here
+
 ## Contributing
 
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a

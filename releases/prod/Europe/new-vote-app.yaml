@@ -1,0 +1,15 @@
+apiVersion: helm.fluxcd.io/v1
+kind: HelmRelease
+metadata:
+  name: new-vote-app
+spec:
+  releaseName: new-vote-app
+  chart:
+    git: https://github.com/melzayet/arc-helm-demo
+    path: charts/azure-vote
+    ref: master
+  values:
+    image:
+      repository: melzayet/arc-demo-app
+      tag: v0.1
+    replicaCount: 2
