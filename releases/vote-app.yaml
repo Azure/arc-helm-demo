@@ -3,7 +3,7 @@ kind: HelmRelease
 metadata:
   name: vote-app
 spec:
-  releaseName: arck8sdemo
+  releaseName: arc-k8s-demo
   chart:
     git: https://github.com/shashankbarsin/arc-helm-demo
     ref: master
