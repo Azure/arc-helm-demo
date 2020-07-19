@@ -5,7 +5,7 @@ metadata:
 spec:
   releaseName: arck8sdemo
   chart:
-    git: https://github.com/shashankbarsinrm /arc-helm-demo
+    git: https://github.com/shashankbarsin/arc-helm-demo
     ref: master
     path: charts/azure-vote
   values:
