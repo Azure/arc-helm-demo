@@ -4,4 +4,4 @@ The voting application has been started on your Kubernetes cluster.
    kubectl get deployments -w
 
 2. Run the following command and navigate to localhost:3000 on a browser to access the application:
-   kubectl port-forward svc/{{ .Values.frontendServiceName }} 3000:80
+   kubectl port-forward -n {{ Release.Namespace }} svc/{{ .Values.frontendServiceName }} 3000:80
