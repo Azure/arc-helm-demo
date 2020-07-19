@@ -4,9 +4,10 @@ metadata:
   name: vote-app
 spec:
   releaseName: arc-k8s-demo
+  targetNamespace: arc-k8s-demo
   chart:
     git: https://github.com/shashankbarsin/arc-helm-demo
     ref: master
     path: charts/azure-vote
   values:
-    frontendServiceName: azure-arc-vote-front
+    frontendServiceName: arc-k8s-demo-vote-front

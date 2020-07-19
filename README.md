@@ -24,7 +24,7 @@ Create a GitOps configuration referencing this sample repo by using the Azure CL
 After a configuration is created, Azure Arc enabled Kubernetes agents and flux will create use the configuration in the repository to create a Helm release on this cluster.
 
 ```bash
-az k8sconfiguration create --name azure-voting-app --resource-group $RESOURCE_GROUP --cluster-name $CLUSTER_NAME --operator-instance-name azure-voting-app --operator-namespace azure-arc-demo --enable-helm-operator --helm-operator-version='0.6.0' --helm-operator-params='--set helm.versions=v3' --repository-url https://github.com/Azure/arc-helm-demo.git --operator-params='--git-readonly --git-path=releases' --scope cluster --cluster-type connectedClusters
+az k8sconfiguration create --name azure-voting-app --resource-group $RESOURCE_GROUP --cluster-name $CLUSTER_NAME --operator-instance-name flux --operator-namespace flux --enable-helm-operator --helm-operator-version='0.6.0' --helm-operator-params='--set helm.versions=v3' --repository-url https://github.com/Azure/arc-helm-demo.git --operator-params='--git-readonly --git-path=releases' --scope cluster --cluster-type connectedClusters
 ```
 
 ## Contributing
