@@ -2,9 +2,9 @@ apiVersion: helm.fluxcd.io/v1
 kind: HelmRelease
 metadata:
   name: vote-app
+  namespace: arc-k8s-demo
 spec:
   releaseName: arc-k8s-demo
-  targetNamespace: arc-k8s-demo
   chart:
     git: https://github.com/shashankbarsin/arc-helm-demo
     ref: master
