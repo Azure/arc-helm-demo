@@ -1,35 +1,45 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: prod
-  name: vote-back-{{.Release.Name}}
+  name: {{.Release.Name}}-vote-back
+  namespace: {{ .Release.Namespace }}
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: vote-back-{{.Release.Name}}
+      app: {{.Release.Name}}-vote-back
   template:
     metadata:
       labels:
-        app: vote-back-{{.Release.Name}}
+        app: {{.Release.Name}}-vote-back
     spec:
+      nodeSelector:
+        kubernetes.io/arch: amd64
+        kubernetes.io/os: linux
       containers:
-      - name: vote-back-{{.Release.Name}}
+      - name: {{.Release.Name}}-vote-back
         image: redis
         ports:
         - containerPort: 6379
           name: redis
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "250m"
+          limits:
+            memory: "256Mi"
+            cpu: "500m"
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: prod
-  name: vote-front-{{.Release.Name}}
+  name: {{.Release.Name}}-vote-front
+  namespace: {{ .Release.Namespace }}
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: vote-front-{{.Release.Name}}
+      app: {{.Release.Name}}-vote-front
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -38,25 +48,23 @@ spec:
   template:
     metadata:
       labels:
-        app: vote-front-{{.Release.Name}}
+        app: {{.Release.Name}}-vote-front
     spec:
+      nodeSelector:
+        kubernetes.io/arch: amd64
+        kubernetes.io/os: linux
       containers:
-      - name: azure-vote-front
-        image: neilpeterson/azure-vote-front:v3
-        imagePullPolicy: Always
+      - name: {{.Release.Name}}-vote-front
+        image: microsoft/azure-vote-front:v1
         ports:
         - containerPort: 80
         resources:
           requests:
-            cpu: 250m
+            memory: "128Mi"
+            cpu: "250m"
           limits:
-            cpu: 500m
+            memory: "256Mi"
+            cpu: "500m"
         env:
         - name: REDIS
-          value: vote-back-{{.Release.Name}}
-        - name: TITLE
-          value: {{ .Values.title }}
-        - name: VOTE1VALUE
-          value: {{ .Values.value1 }}
-        - name: VOTE2VALUE
-          value: {{ .Values.value2 }}
+          value: {{.Release.Name}}-vote-back

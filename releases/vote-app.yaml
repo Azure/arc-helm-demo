@@ -1,0 +1,13 @@
+apiVersion: helm.fluxcd.io/v1
+kind: HelmRelease
+metadata:
+  name: vote-app
+  namespace: arc-k8s-demo
+spec:
+  releaseName: arc-k8s-demo
+  chart:
+    git: https://github.com/Azure/arc-helm-demo
+    ref: master
+    path: charts/azure-vote
+  values:
+    frontendServiceName: arc-k8s-demo-vote-front

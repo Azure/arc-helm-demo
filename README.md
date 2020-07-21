@@ -1,64 +1,38 @@
----
-page_type: sample
-languages:
-- csharp
-products:
-- dotnet
-description: "Add 150 character max description"
-urlFragment: "update-this-to-unique-url-stub"
----
+# Official Helm based cluster configuration sample for Azure Arc enabled Kubernetes
 
-
-
-az k8sconfiguration create --name azure-voting-app --resource-group k8s-clusters --cluster-name ark-helm \
---operator-instance-name azure-voting-app --operator-namespace prod \
---enable-helm-operator --helm-operator-chart-version='0.6.0' --helm-operator-chart-values='--set helm.versions=v3' \
---repository-url https://github.com/Azure/arc-helm-demo.git --operator-params='--git-readonly --git-path=prod'
-
-
---helm-operator-chart-values='--set helm.versions=v3' \
-
-
-# Official Microsoft Sample
-
-<!-- 
-Guidelines on README format: https://review.docs.microsoft.com/help/onboard/admin/samples/concepts/readme-template?branch=master
-
-Guidance on onboarding samples to docs.microsoft.com/samples: https://review.docs.microsoft.com/help/onboard/admin/samples/process/onboarding?branch=master
-
-Taxonomies for products and languages: https://review.docs.microsoft.com/new-hope/information-architecture/metadata/taxonomies?branch=master
--->
-
-Give a short description for your sample here. What does it do and why is it important?
+This repository contains a sample Helm chart that can be deployed using GitOps to an Azure Arc enabled Kubernetes cluster.
 
 ## Contents
 
-Outline the file contents of the repository. It helps users navigate the codebase, build configuration and any related assets.
-
-| File/folder       | Description                                |
-|-------------------|--------------------------------------------|
-| `src`             | Sample source code.                        |
-| `.gitignore`      | Define what to ignore at commit time.      |
-| `CHANGELOG.md`    | List of changes to the sample.             |
-| `CONTRIBUTING.md` | Guidelines for contributing to the sample. |
-| `README.md`       | This README file.                          |
-| `LICENSE`         | The license for the sample.                |
+| File/folder          | Description                                |
+|----------------------|--------------------------------------------|
+| `charts`             | Contains sample helm chart                 |
+| `releases`           | Release configuration picked up by Flux    |
+| `.gitignore`         | Defines what to ignore at commit time.     |
+| `README.md`          | This README file.                          |
+| `CODE_OF_CONDUCT.md` | Microsoft code of conduct.                 |
+| `LICENSE`            | The license for the sample.                |
 
 ## Prerequisites
 
-Outline the required components and tools that a user might need to have on their machine in order to run the sample. This can be anything from frameworks, SDKs, OS versions or IDE releases.
-
-## Setup
-
-Explain how to prepare the sample once the user clones or downloads the repository. The section should outline every step necessary to install dependencies and set up any settings (for example, API keys and output folders).
+One or more Kubernetes clusters are [connected to Azure Arc](https://docs.microsoft.com/en-in/azure/azure-arc/kubernetes/connect-cluster) using the `connectedk8s` Azure CLI extension.
 
 ## Running the sample
 
-Outline step-by-step instructions to execute the sample and see its output. Include steps for executing the sample from the IDE, starting specific services in the Azure portal or anything related to the overall launch of the code.
+Create a GitOps configuration referencing this sample repo by using the Azure CLI extension `k8sconfiguration` or Azure portal. Complete documentation on the available options can be found [here](https://docs.microsoft.com/en-in/azure/azure-arc/kubernetes/use-gitops-connected-cluster).
 
-## Key concepts
+After a configuration is created, Azure Arc enabled Kubernetes agents and flux will create use the configuration in the repository to create a Helm release on this cluster.
 
-Provide users with more context on the tools and services used in the sample. Explain some of the code that is being used and how services interact with each other.
+```bash
+az k8sconfiguration create --name azure-voting-app \
+    --resource-group $RESOURCE_GROUP --cluster-name $CLUSTER_NAME \
+    --operator-instance-name flux --operator-namespace arc-k8s-demo \
+    --operator-params='--git-readonly --git-path=releases' \
+    --enable-helm-operator --helm-operator-version='0.6.0' \
+    --helm-operator-params='--set helm.versions=v3' \
+    --repository-url https://github.com/Azure/arc-helm-demo.git  \
+    --scope namespace --cluster-type connectedClusters
+```
 
 ## Contributing
 
