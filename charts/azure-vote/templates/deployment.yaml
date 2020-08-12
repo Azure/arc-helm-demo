@@ -56,6 +56,8 @@ spec:
       containers:
       - name: {{.Release.Name}}-vote-front
         image: microsoft/azure-vote-front:v1
+        securityContext:
+          privileged: true
         ports:
         - containerPort: 80
         resources:
