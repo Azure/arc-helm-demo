@@ -24,7 +24,7 @@ Create a GitOps configuration referencing this sample repo by using the Azure CL
 After a configuration is created, Azure Arc enabled Kubernetes agents and flux will create use the configuration in the repository to create a Helm release on this cluster.
 
 ```bash
-az k8sconfiguration create --name azure-js-app \
+az k8sconfiguration create --name azure-arc-sample \
     --resource-group $RESOURCE_GROUP --cluster-name $CLUSTER_NAME \
     --operator-instance-name flux --operator-namespace arc-k8s-demo \
     --operator-params='--git-readonly --git-path=releases' \
