@@ -23,7 +23,7 @@ spec:
         kubernetes.io/os: linux
       containers:
       - name: {{.Release.Name}}
-        image: akashkeshari3010/arc-conformance-test:jsappv1
+        image: arck8sconformance.azurecr.io/samples/demo:v0.1.0
         imagePullPolicy: Always
         ports:
         - containerPort: 8080
