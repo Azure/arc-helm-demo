@@ -1,3 +1,3 @@
   
 # Default value for frontendServiceName unless overriden
-frontendServiceName: azure-vote-front
+jsServiceName: azure-js
