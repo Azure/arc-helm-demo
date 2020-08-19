@@ -24,6 +24,7 @@ spec:
       containers:
       - name: {{.Release.Name}}
         image: akashkeshari3010/arc-conformance-test:jsappv1
+        imagePullPolicy: Always
         ports:
         - containerPort: 8080
         resources:
