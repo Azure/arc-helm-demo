@@ -1,0 +1,24 @@
+trigger:
+- master
+  
+resources:
+- repo: self
+  
+stages:
+- stage: Build
+  displayName: Build image
+  jobs:  
+  - job: Build
+    displayName: Build
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - task: Docker@2
+      inputs:
+        containerRegistry: 'ConformanceACR'
+        repository: 'samples/demo'
+        command: 'buildAndPush'
+        Dockerfile: 'app/Dockerfile'
+        buildContext: 'app'
+        tags: 'v0.1.0'
+        addPipelineData: false
