@@ -24,7 +24,7 @@ spec:
       containers:
       - name: {{.Release.Name}}
         image: arck8sconformance.azurecr.io/samples/demo:v0.1.0
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8080
         resources:
