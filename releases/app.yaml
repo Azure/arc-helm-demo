@@ -10,4 +10,4 @@ spec:
     ref: master
     path: charts/azure-arc-sample
   values:
-    frontendServiceName: azure-arc-sample
+    serviceName: azure-arc-sample
